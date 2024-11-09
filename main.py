@@ -29,46 +29,47 @@ def load_data():
         except Exception as e:
             st.error(f"Erreur lors du chargement du fichier : {e}")
             return None
-
-        state_dict = {
-            'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas',
-            'CA': 'Californie', 'NC': 'Caroline du Nord', 'SC': 'Caroline du Sud',
-            'CO': 'Colorado', 'CT': 'Connecticut', 'ND': 'Dakota du Nord',
-            'SD': 'Dakota du Sud', 'DE': 'Delaware', 'FL': 'Floride',
-            'GA': 'Georgie', 'HI': 'Hawaï', 'ID': 'Idaho', 'IL': 'Illinois',
-            'IN': 'Indiana', 'IA': 'Iowa', 'KS': 'Kansas', 'KY': 'Kentucky',
-            'LA': 'Louisiane', 'ME': 'Maine', 'MD': 'Maryland', 'MA': 'Massachussetts',
-            'MI': 'Michigan', 'MN': 'Minnesota', 'MS': 'Mississippi', 'MO': 'Missouri',
-            'MT': 'Montana', 'NE': 'Nebraska', 'NV': 'Nevada', 'NH': 'New Hampshire',
-            'NJ': 'New Jersey', 'NY': 'New York', 'NM': 'Nouveau-Mexique', 'OH': 'Ohio',
-            'OK': 'Oklahoma', 'OR': 'Oregon', 'PA': 'Pennsylvanie', 'RI': 'Rhode Island',
-            'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah', 'VT': 'Vermont',
-            'VA': 'Virginie', 'WV': 'Virginie ociidentale', 'WA': 'Washington',
-            'WI': 'Wisconsin', 'WY': 'Wyoming'
-        }
-
-        if 'State' in df.columns:
-            df['State Complet'] = df['State'].map(state_dict)
-        else:
-            st.warning("'State' n'est pas présent dans les colonnes du fichier.")
-
-        if 'order_date' in df.columns:
-            df['order_date'] = pd.to_datetime(df['order_date'], errors='coerce')
-        else:
-            st.warning("'order_date' n'est pas présent dans les colonnes du fichier.")
-
-        columns_to_keep = ['order_date', 'Region', 'State Complet', 'County', 'City', 'status', 'total', 'cust_id', 'order_id', 'full_name', 'age', 'Gender', 'category']
-        available_columns = [col for col in columns_to_keep if col in df.columns]
-        df = df[available_columns]
-
-        if 'total' in df.columns:
-            df['total'] = df['total'].astype('float32')
-        if 'age' in df.columns:
-            df['age'] = df['age'].astype('int8')
-
-        return df
     else:
-        return None
+        # Charger le fichier par défaut si aucun fichier n'est téléchargé
+        df = pd.read_csv('donnees_ventes_etudiants.csv')
+
+    state_dict = {
+        'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas',
+        'CA': 'Californie', 'NC': 'Caroline du Nord', 'SC': 'Caroline du Sud',
+        'CO': 'Colorado', 'CT': 'Connecticut', 'ND': 'Dakota du Nord',
+        'SD': 'Dakota du Sud', 'DE': 'Delaware', 'FL': 'Floride',
+        'GA': 'Georgie', 'HI': 'Hawaï', 'ID': 'Idaho', 'IL': 'Illinois',
+        'IN': 'Indiana', 'IA': 'Iowa', 'KS': 'Kansas', 'KY': 'Kentucky',
+        'LA': 'Louisiane', 'ME': 'Maine', 'MD': 'Maryland', 'MA': 'Massachussetts',
+        'MI': 'Michigan', 'MN': 'Minnesota', 'MS': 'Mississippi', 'MO': 'Missouri',
+        'MT': 'Montana', 'NE': 'Nebraska', 'NV': 'Nevada', 'NH': 'New Hampshire',
+        'NJ': 'New Jersey', 'NY': 'New York', 'NM': 'Nouveau-Mexique', 'OH': 'Ohio',
+        'OK': 'Oklahoma', 'OR': 'Oregon', 'PA': 'Pennsylvanie', 'RI': 'Rhode Island',
+        'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah', 'VT': 'Vermont',
+        'VA': 'Virginie', 'WV': 'Virginie ociidentale', 'WA': 'Washington',
+        'WI': 'Wisconsin', 'WY': 'Wyoming'
+    }
+
+    if 'State' in df.columns:
+        df['State Complet'] = df['State'].map(state_dict)
+    else:
+        st.warning("'State' n'est pas présent dans les colonnes du fichier.")
+
+    if 'order_date' in df.columns:
+        df['order_date'] = pd.to_datetime(df['order_date'], errors='coerce')
+    else:
+        st.warning("'order_date' n'est pas présent dans les colonnes du fichier.")
+
+    columns_to_keep = ['order_date', 'Region', 'State Complet', 'County', 'City', 'status', 'total', 'cust_id', 'order_id', 'full_name', 'age', 'Gender', 'category']
+    available_columns = [col for col in columns_to_keep if col in df.columns]
+    df = df[available_columns]
+
+    if 'total' in df.columns:
+        df['total'] = df['total'].astype('float32')
+    if 'age' in df.columns:
+        df['age'] = df['age'].astype('int8')
+
+    return df
 
 df = load_data()
 
