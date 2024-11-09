@@ -30,7 +30,6 @@ def load_data():
             st.error(f"Erreur lors du chargement du fichier : {e}")
             return None
     else:
-        # Charger le fichier par défaut si aucun fichier n'est téléchargé
         df = pd.read_csv('donnees_ventes_etudiants.csv')
 
     state_dict = {
